@@ -20,12 +20,12 @@ Route::get('/', function () {
 
 Route::get('/list', [ListController::class, 'index'])->name('list.index');
 
-Route::get('/list/create', [ListController::class, 'create']);
+Route::get('/list/create', [ListController::class, 'create'])->name('list.create');
 
-Route::post('/list/create/new', [ListController::class, 'store']);
+Route::post('/list/create/new', [ListController::class, 'store'])->name('list.store');
 
-Route::get('/list/edit/{id}', [ListController::class, 'edit']);
+Route::get('/list/edit/{id}', [ListController::class, 'edit'])->name('list.edit');
 
-Route::get('/list/delete/{id}', [ListController::class, 'destroy']);
+Route::get('/list/delete/{id}', [ListController::class, 'destroy'])->name('list.destroy');
 
-Route::post('/list/edit/{id}/new', [ListController::class, 'update']);
+Route::post('/list/edit/{id}/new', [ListController::class, 'update'])->name('list.update');
