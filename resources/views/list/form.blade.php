@@ -1,5 +1,5 @@
 @extends('list.layout')
-@section('title') Form @endsection
+@section('title', 'Form')
 @section('body')                                
     <form 
         @if(isset($id))

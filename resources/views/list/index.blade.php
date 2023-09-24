@@ -1,5 +1,5 @@
 @extends('list.layout')
-@section('title') ToDo @endsection
+@section('title', 'ToDo')
 @section('body')
     <h1>My tasks</h1>
     <a href="/list/create">New task</a>
