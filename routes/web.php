@@ -1,5 +1,5 @@
 <?php
- 
+
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ListController;
 
@@ -28,4 +28,4 @@ Route::get('/list/edit/{id}', [ListController::class, 'edit'])->name('list.edit'
 
 Route::get('/list/delete/{id}', [ListController::class, 'destroy'])->name('list.destroy');
 
-Route::post('/list/edit/{id}/new', [ListController::class, 'update'])->name('list.update');
+Route::put('/list/edit/{id}/new', [ListController::class, 'update'])->name('list.update');
