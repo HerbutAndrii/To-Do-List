@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Task;
 
-class ListController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,17 +20,18 @@ class ListController extends Controller
      */
     public function create()
     {
-        return view('list.form');
+        return view('list.formTask');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Task $task)
+    public function store(Request $request)
     {
+        $task = new Task();
         $task->title = $request->input('title');
         $task->save();
-        return response()->redirectTo(route('list.index'));
+        return redirect(route('task.index'));
     }
 
     /**
@@ -44,30 +45,28 @@ class ListController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Task $task)
     {
-        $task = Task::find($id);
-        return view('list.form', ['title' => $task->title, 'id' => $task->id]);
+        return view('list.formTask', compact('task'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Task $task)
     {
-        $task = Task::find($id);
         $task->title = $request->input('title');
-        $task->save();
-        return response()->redirectTo(route('list.index'));
+        $task->update();
+        return redirect(route('task.index'));
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $task)
     {
-        $task = Task::find($id);
+        $task->items()->delete();
         $task->delete();
-        return response()->redirectTo(route('list.index'));
+        return redirect(route('task.index'));
     }
 }

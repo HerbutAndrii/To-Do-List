@@ -2,17 +2,32 @@
 @section('title', 'ToDo')
 @section('body')
     <h1>ToDo List</h1>
-    <a href="{{ route('list.create') }}">New task</a> <br>
-        <ol>
-            @foreach($tasks as $task)
-                <li>
-                    <form action="{{ route('list.destroy', $task->id) }}">
-                        {{ $task->title }} 
-                        <a href="{{ route('list.edit', $task->id) }}">Edit</a> 
-                        @csrf
-                        <button type="submit">Delete</button> <br> <br>
-                    </form>
-                </li>
-            @endforeach
-        </ol>
+    <a href="{{ route('task.create') }}">New task</a> <br>
+    <ol>
+        @foreach($tasks as $task)
+            <li>
+                {{ $task->title }} 
+                <ul>
+                    @foreach($task->items as $item)
+                        <li>
+                            <form action="{{ route('item.destroy', $item) }}" method="POST">
+                                @csrf
+                                @method("DELETE")
+                                {{ $item->title }}
+                                <a href="{{ route('item.edit', $item) }}">Edit</a> 
+                                <button type="submit">Delete</button> <br> <br>
+                            </form>
+                        </li>                                
+                    @endforeach
+                </ul>
+                <form action="{{ route('task.destroy', $task) }}" method="POST">
+                    @csrf
+                    @method("DELETE")
+                    <a class="addItem" href="{{ route('item.create', $task->id) }}">Add item</a> 
+                    <a href="{{ route('task.edit', $task) }}">Edit</a> 
+                    <button type="submit">Delete</button> <br> <br>
+                </form>
+            </li>
+        @endforeach
+    </ol>
 @endsection
