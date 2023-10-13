@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\TaskRequest;
 use App\Models\Task;
-use Illuminate\Support\Facades\Validator;
+
 
 class TaskController extends Controller
 {
@@ -13,7 +13,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return view('list.index', ['tasks' => Task::all()]);
+        return view('list.index', ['tasks' => auth()->user()->tasks]);
     }
 
     /**
@@ -27,14 +27,13 @@ class TaskController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TaskRequest $request)
     {
-        $request->validate([
-            'title' => ['required', 'string'],
-        ]);
-
+        $request->validated();
+        
         $task = new Task();
         $task->title = $request->input('title');
+        $task->user()->associate(auth()->user());
         $task->save();
         return redirect(route('task.index'));
     }
@@ -58,10 +57,9 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Task $task)
+    public function update(TaskRequest $request, Task $task)
     {
-        $task->title = $request->input('title');
-        $task->update();
+        $task->update($request->validated());
         return redirect(route('task.index'));
     }
 

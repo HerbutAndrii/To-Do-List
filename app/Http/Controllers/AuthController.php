@@ -2,33 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AuthRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    public function login() {
-        return view('list.login');
+    public function loginView() {
+        return view('login');
     }
 
-    public function submit(Request $request){
-        $user = User::where('email', $request->email)->first();
+    public function login(AuthRequest $request) {
+        $request->validated();
 
-        if(Hash::check($request->password, $user->password)){
+        $user = User::where('email', $request->email)->first();
+        if($user && Hash::check($request->password, $user?->password)) {
             auth()->login($user);
-            return redirect("/");
+            return redirect(route('task.index'));
         } else {
             return back()->withErrors([
-                'password' => 'Passwords do not match',
+                'Login' => 'Such user does not exist'
             ]);
         }
     }
 
-    public function logout()
-    {
+    public function logout() {
         auth()->logout();
         session()->regenerate();
-        return back();
+        return redirect("/");
     }
 }

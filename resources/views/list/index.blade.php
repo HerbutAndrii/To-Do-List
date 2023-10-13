@@ -1,6 +1,10 @@
 @extends('list.layout')
 @section('title', 'ToDo')
 @section('body')
+    <form action="{{ route('auth.logout') }}" method="POST">
+        @csrf
+        <button>Logout</button>
+    </form>
     <h1>ToDo List</h1>
     <a href="{{ route('task.create') }}">New task</a> <br>
     <ol>

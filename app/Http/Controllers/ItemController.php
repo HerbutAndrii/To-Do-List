@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\ItemRequest;
 use App\Models\Item;
 use App\Models\Task;
 
@@ -12,7 +12,9 @@ class ItemController extends Controller
         return view('list.formItem', compact('id'));
     }
 
-    public function store(Request $request, string $id) {
+    public function store(ItemRequest $request, string $id) { 
+        $request->validated();
+
         $task = Task::find($id);
         $item = new Item();
         $item->title = $request->input('title');
@@ -25,9 +27,8 @@ class ItemController extends Controller
         return view('list.formItem', compact('item'));
     }
 
-    public function update(Request $request, Item $item) {
-        $item->title = $request->input('title');
-        $item->update();
+    public function update(ItemRequest $request, Item $item) {
+        $item->update($request->validated());
         return redirect(route('task.index'));
     }
 

@@ -3,7 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\ItemController;
-
+use \App\Http\Controllers\AuthController;
+use App\Http\Controllers\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use App\Http\Controllers\ItemController;
 |
 */
 Route::get('/', function () {
-    return view('welcome');
+    return auth()->check() ? redirect(route('task.index')) : view('welcome'); 
 });
 
 Route::middleware('auth')->group(function () {
@@ -34,9 +35,12 @@ Route::middleware('auth')->group(function () {
     Route::put('/tasks/item/edit/{item}', [ItemController::class, 'update'])->name('item.update');
     Route::delete('/tasks/item/delete/{item}', [ItemController::class, 'destroy'])->name('item.destroy');
 
-    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout'])->name('auth.logout');
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 });
-Route::get('/login', [\App\Http\Controllers\AuthController::class, 'login'])->name('auth.login');
 
-Route::post('/login', [\App\Http\Controllers\AuthController::class, 'submit'])->name('auth.submit');
+Route::get('/login', [AuthController::class, 'loginView'])->name('auth.loginView');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
+Route::get('/register', [RegisterController::class, 'registerView'])->name('auth.registerView');
+Route::post('/register/verification', [RegisterController::class, 'register'])->name('auth.register');
+Route::post('/register/verification/{user}/{code}', [RegisterController::class, 'confirm'])->name('auth.confirm');

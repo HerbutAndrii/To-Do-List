@@ -7,15 +7,6 @@
     <link rel="stylesheet" href="/styles.css"/>
 </head>
 <body>
-@dump(auth()->user()?->email)
-@if(auth()->check())
-    <form action="{{ route('auth.logout') }}" method="POST">
-        @csrf
-        <button>Logout</button>
-    </form>
-@else
-    <a href="{{ route("auth.login") }}">Login</a>
-@endif
 @yield('body')
 </body>
 </html>
