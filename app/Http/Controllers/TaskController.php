@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
 use App\Models\Task;
+use App\Models\User;
 
 
 class TaskController extends Controller
@@ -13,6 +14,10 @@ class TaskController extends Controller
      */
     public function index()
     {
+        if (request()->expectsJson()) {
+            return User::all();
+        }
+
         return view('list.index', ['tasks' => auth()->user()->tasks]);
     }
 
@@ -30,7 +35,7 @@ class TaskController extends Controller
     public function store(TaskRequest $request)
     {
         $request->validated();
-        
+
         $task = new Task();
         $task->title = $request->input('title');
         $task->user()->associate(auth()->user());

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 use App\Mail\Confirmation;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,17 +18,23 @@ class RegisterController extends Controller
 
     public function register(RegisterRequest $request) {
         $request->validated();
-        
+
+        DB::beginTransaction();
+
         $user = new User();
         $user->name = $request->name;
         $user->password = Hash::make($request->password);
         $user->email = $request->email;
+        $user->avatar = "";
         $user->save();
-        
+
         $confirmation = new Confirmation();
         Mail::to($request->email)->send($confirmation);
+
+        DB::commit();
+
         return view('confirmation', [
-            'code' => $confirmation->code,
+            'code' => "ekjiubei",
             'user' => $user
         ]);
     }
