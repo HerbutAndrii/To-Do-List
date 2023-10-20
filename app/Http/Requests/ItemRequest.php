@@ -22,7 +22,8 @@ class ItemRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string']
+            'title' => ['required', 'string'],
+            'color' => ['string', 'size:7']
         ];
     }
 }

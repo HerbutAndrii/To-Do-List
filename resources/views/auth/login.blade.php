@@ -8,14 +8,14 @@
         @enderror
         <label>
             Password
-            <input type="password" name="password"> <br>
+            <input type="password" name="password" value="{{ old('password') }}"> <br>
         </label>
         @error('password')
             <div style="color: red; font-size: 30px">{{ $message }}</div>
         @enderror
         <label>
             Email
-            <input type="email" name="email"> <br>
+            <input type="email" name="email" value="{{ old('email') }}"> <br>
             @error('email')
                 <div style="color: red; font-size: 30px" >{{ $message }}</div>
             @enderror

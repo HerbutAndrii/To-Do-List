@@ -13,11 +13,10 @@ class ItemController extends Controller
     }
 
     public function store(ItemRequest $request, string $id) { 
-        $request->validated();
-
         $task = Task::find($id);
         $item = new Item();
         $item->title = $request->input('title');
+        $item->color = $request->input('color');
         $item->task()->associate($task);
         $item->save();
         return redirect(route('task.index'));

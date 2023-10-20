@@ -18,7 +18,7 @@ class TaskController extends Controller
             return User::all();
         }
 
-        return view('list.index', ['tasks' => auth()->user()->tasks]);
+        return view('list.index', ['user' => auth()->user()]);
     }
 
     /**
@@ -34,10 +34,9 @@ class TaskController extends Controller
      */
     public function store(TaskRequest $request)
     {
-        $request->validated();
-
         $task = new Task();
         $task->title = $request->input('title');
+        $task->color = $request->input('color');
         $task->user()->associate(auth()->user());
         $task->save();
         return redirect(route('task.index'));

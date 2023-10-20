@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AuthRequest;
+use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class AuthController extends Controller
+class LoginController extends Controller
 {
     public function loginView() {
-        return view('login');
+        return view('auth.login');
     }
 
-    public function login(AuthRequest $request) {
-        $request->validated();
-
+    public function login(LoginRequest $request) {
         $user = User::where('email', $request->email)->first();
         if($user && Hash::check($request->password, $user?->password)) {
             auth()->login($user);
@@ -22,7 +20,7 @@ class AuthController extends Controller
         } else {
             return back()->withErrors([
                 'Login' => 'Such user does not exist'
-            ]);
+            ])->withInput();
         }
     }
 

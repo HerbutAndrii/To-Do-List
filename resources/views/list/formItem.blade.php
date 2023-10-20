@@ -11,6 +11,10 @@
         @error('title')
             <div style="color: red">{{ $message }}</div>
         @enderror
+        <label>
+            Color 
+            <input type="color" name="color" value="{{ isset($item) ? $item->color : '#ffffff' }}"> <br> 
+        </label>
         <button type="submit">{{ isset($id) ? "Create" : "Edit" }}</button>
     </form>
 @endsection

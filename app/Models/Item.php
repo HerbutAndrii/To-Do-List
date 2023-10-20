@@ -9,7 +9,7 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title'];
+    protected $fillable = ['title', 'color'];
 
     public function task() {
         return $this->belongsTo(Task::class);

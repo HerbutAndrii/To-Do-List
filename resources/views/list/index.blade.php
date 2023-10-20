@@ -1,6 +1,10 @@
 @extends('list.layout')
 @section('title', 'ToDo')
 @section('body')
+    @if($user->avatar)
+        <img src="{{ 'storage/avatars/User'.$user->id }}" alt="{{ $user->name }}" class="avatar">
+    @endisset
+    <div style="color: white; font-size: 30px; margin-bottom: 20px">{{ $user->name }}</div>
     <form action="{{ route('auth.logout') }}" method="POST">
         @csrf
         <button>Logout</button>
@@ -8,16 +12,16 @@
     <h1>ToDo List</h1>
     <a href="{{ route('task.create') }}">New task</a> <br>
     <ol>
-        @foreach($tasks as $task)
+        @foreach($user->tasks as $task)
             <li>
-                {{ $task->title }} 
+                <div style="color: <?= $task->color ?>">{{ $task->title }}</div> 
                 <ul>
                     @foreach($task->items as $item)
                         <li>
                             <form action="{{ route('item.destroy', $item) }}" method="POST">
                                 @csrf
                                 @method("DELETE")
-                                {{ $item->title }}
+                                <span style="color: <?= $item->color ?>">{{ $item->title }}</spam>
                                 <a href="{{ route('item.edit', $item) }}">Edit</a> 
                                 <button type="submit">Delete</button> <br> <br>
                             </form>
